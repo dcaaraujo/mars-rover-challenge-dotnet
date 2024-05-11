@@ -8,19 +8,18 @@ public class Rover(int startX, int startY, Direction startDirection)
 
     public Direction Direction { get; private set; } = startDirection;
 
-    public static Rover Parse(string deployment)
+    public static Rover Parse(string input)
     {
-        var tokens = deployment.Split(' ');
+        var tokens = input.Trim().Split(' ');
         if (tokens.Length != 3)
         {
-            throw new ArgumentException($"Could not construct rover with deployment: \"{deployment}\"");
+            throw new ArgumentException($"Could not construct rover with input: \"{input}\"");
         }
         var x = int.Parse(tokens[0]);
         var y = int.Parse(tokens[1]);
-        var dir = (Direction) char.Parse(tokens[2]);
+        var dir = (Direction)char.ToUpper(char.Parse(tokens[2]));
         return new(x, y, dir);
     }
-
 
     public void RunInstruction(Instruction instruction)
     {
@@ -35,6 +34,14 @@ public class Rover(int startX, int startY, Direction startDirection)
             case Instruction.TurnRight:
                 TurnRight();
                 break;
+        }
+    }
+
+    public void RunAllInstructions(IEnumerable<Instruction> instructions)
+    {
+        foreach (var i in instructions)
+        {
+            RunInstruction(i);
         }
     }
 
@@ -75,19 +82,4 @@ public class Rover(int startX, int startY, Direction startDirection)
             _ => throw new ArgumentOutOfRangeException()
         };
     }
-}
-
-public enum Direction
-{
-    North = 'N',
-    South = 'S',
-    East = 'E',
-    West = 'W'
-}
-
-public enum Instruction
-{
-    TurnLeft = 'L',
-    TurnRight = 'R',
-    MoveForeward = 'M'
 }

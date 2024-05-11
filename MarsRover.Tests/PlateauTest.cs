@@ -31,4 +31,18 @@ public class PlateauTest
         result = _sut.IsWithinBounds(3, -1);
         Assert.False(result);
     }
+
+    [Fact]
+    public void ParseFactoryMethodReturnsPlateau()
+    {
+        var sut = Plateau.Parse("5 4");
+        Assert.Equal(5, sut.TopX);
+        Assert.Equal(4, sut.TopY);
+    }
+
+    [Fact]
+    public void ThrowsExceptionWhenGivenInvalidInput()
+    {
+        Assert.Throws<ArgumentException>(() => Plateau.Parse("T E S T"));
+    }
 }
